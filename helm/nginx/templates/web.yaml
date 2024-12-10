@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: devops-web
-        image: {{ .Values.repository.image }}:{{ .Values.repository.tag }}
+        image: {{ .Values.repository.image }}
         ports:
         - containerPort: {{ .Values.containerPort }}
         env:

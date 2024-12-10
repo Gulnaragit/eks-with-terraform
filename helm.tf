@@ -1,8 +1,9 @@
 resource "helm_release" "nginx" {
     name = "nginx"
     chart = "nginx"
-    repository = "./helmchart"
-    # namespace = "defaul"
+    repository = "./helm"
+    namespace = "default"
+    timeout = 300
     # max_history = 3
     # create_namespace = true
     # wait = true

@@ -28,6 +28,11 @@ resource "aws_iam_role_policy_attachment" "nodes-AmazonEC2ContainerRegistryReadO
   role       = aws_iam_role.nodes.name
 }
 
+resource "aws_iam_role_policy_attachment" "nodes-AmazonEBSCSIDriverPolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+  role       = aws_iam_role.nodes.name
+}
+
 resource "aws_eks_node_group" "public-nodes" {
   cluster_name    = aws_eks_cluster.demo.name
   node_group_name = "public-nodes"
@@ -38,8 +43,8 @@ resource "aws_eks_node_group" "public-nodes" {
     aws_subnet.public-us-east-1b.id
   ]
 
-  capacity_type  = "ON_DEMAND"
-  instance_types = ["t2.small"]
+  capacity_type  = "SPOT"
+  instance_types = ["t2.medium"]
 
   scaling_config {
     desired_size = 2
@@ -59,5 +64,6 @@ resource "aws_eks_node_group" "public-nodes" {
     aws_iam_role_policy_attachment.nodes-AmazonEKSWorkerNodePolicy,
     aws_iam_role_policy_attachment.nodes-AmazonEKS_CNI_Policy,
     aws_iam_role_policy_attachment.nodes-AmazonEC2ContainerRegistryReadOnly,
+    aws_iam_role_policy_attachment.nodes-AmazonEBSCSIDriverPolicy,
   ]
 }
